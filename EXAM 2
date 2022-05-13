@@ -1,0 +1,125 @@
+class Main {
+    public static void main(String[] args) {
+        // Create test array of numbers and print to screen
+        int[] test = { 99, 34, 50, 65, 23, 78, 91, 82, 86, 50, 21, 29, 44, 36, 49, 50, 55, 58, 98, 91 };
+        printArray(test);
+
+        // Sort new array and print sort stats
+        bubbleSort(test);
+        // selectionSort(test);
+        printArray(test);
+
+        // Search *sorted* array with both search algorithms
+        System.out.println(binarySearch(test, 50)); // index 9 for test array
+        System.out.println(linearSearch(test, 50)); // index 7 for test array
+
+        // Print average stats for test array
+        System.out.println("Mean = " + meanArrayValue(test)); // 59.45 for test array
+        System.out.println("Median = " + medianArrayValue(test)); // 52.5 for test array
+        System.out.println("Mode = " + modeArrayValue(test)); // 50 for test array
+    }
+
+    public static void printArray(int[] array) {
+        /*
+         * Description: prints the contents of an array to screen one element per line
+         * Parameters: int array of values to be printed Returns: void
+         */
+        System.out.println("-----");
+        for (int i = 0; i < array.length; i++) {
+            System.out.println(array[i]);
+        }
+    }
+
+    public static double meanArrayValue(int[] array) {
+        double total = 0;
+        for (int i = 0; i < array.length; i++) {
+            total = total + array[i];
+        }
+        return total / array.length;
+    }
+
+    public static double medianArrayValue(int[] array) {
+        /*
+         * Description: Computes median value from a sorted array Parameters: int array
+         * of values from which median is computed Returns: double calculated median
+         * value Note: Array must be sorted!
+         */
+        bubbleSort(array);
+        double median;
+        if (array.length % 2 == 0) {
+            median = ((double) array[array.length / 2] + (double) array[array.length / 2 - 1]) / 2;
+        } else {
+            median = (double) array[array.length / 2];
+        }
+        return median;
+    }
+
+    public static int modeArrayValue(int[] array) {
+        selectionSort(array);
+        int countsum = 0;
+        int valuesum = 0;
+        for (int i = 0; i < array.length; i++) {
+            int counter = 0;
+            for (int j = 0; j < array.length; j++) {
+                if (array[i] == array[j]) {
+                    counter++;
+                }
+                if (counter > countsum) {
+                    countsum = counter;
+                    valuesum = array[i];
+                }
+            }
+        }
+        return valuesum;
+    }
+
+    public static void bubbleSort(int[] array) {
+        for (int out = array.length - 1; out > 0; out--) {
+            for (int in = 0; in < out; in++) {
+                if (array[in] > array[in + 1]) {
+                    int tmp = array[in]; // swap items
+                    array[in] = array[in + 1]; //
+                    array[in + 1] = tmp; //
+                }
+            }
+        }
+    }
+
+    public static void selectionSort(int array[]) {
+        int in, out, temp;
+        for (out = 1; out < array.length; out++) {
+            temp = array[out];
+            for (in = out; in > 0 && array[in - 1] >= temp; in--) {
+                array[in] = array[in - 1];
+            }
+            array[in] = temp;
+        }
+    }
+
+    public static int linearSearch(int array[], int key) {
+        // iterate over each element in array
+        for (int i = 0; i < array.length; i++) {
+            if (key == (array[i])) {
+                return i; // found it so return position
+            }
+        }
+        return -1; // not found so return -1
+    }
+
+    public static int binarySearch(int array[], int key) {
+        int left = 0, right = array.length - 1;
+        while (left <= right) {
+            int pivot = (left + right) / 2;
+            if (key == array[pivot]) {
+                return pivot; // found
+            } else if (key > array[pivot]) {
+                left = pivot + 1; // search right
+            } else {
+                right = pivot - 1; // search left
+            }
+        }
+        return -1; // not found
+    }
+    // ** Add helper methods here ** //
+
+}
